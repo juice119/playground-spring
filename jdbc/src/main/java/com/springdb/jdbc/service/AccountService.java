@@ -12,12 +12,14 @@ public class AccountService implements IAccountService {
 		this.repository = repository;
 	}
 
+	@Transactional
 	@Override
 	public void deposit(int userId, int amount) {
 		AccountRecord record = AccountRecord.createDeposit(0, amount, userId);
 		repository.save(record);
 	}
 
+	@Transactional
 	@Override
 	public AccountRecord withDrawl(int userId, int amount) {
 		// TODO 사용자 밸리데이션 추가
