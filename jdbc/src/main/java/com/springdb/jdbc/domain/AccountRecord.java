@@ -10,6 +10,15 @@ public class AccountRecord {
 	private int userId;
 	private OperationType operationType;
 
+	public static AccountRecord createWithDrawl(int userId, int amount, AccountRecord lastRecord) {
+		AccountRecord accountRecord = new AccountRecord();
+		accountRecord.setUserId(userId);
+		accountRecord.setChangeAmount(amount);
+		accountRecord.setBalance(lastRecord.balance - amount);
+		accountRecord.setOperationType(OperationType.WITHDRAWAL);
+		return accountRecord;
+	}
+
 	public String getOperationType() {
 		return operationType.name();
 	}

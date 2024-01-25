@@ -58,7 +58,16 @@ class AccountServiceTest {
 	@Test
 	@DisplayName("사용자는 출금 할 수 있다")
 	void withdrawal() {
+		// given
+		User user = userService.create("test", "01012341234");
+		accountService.deposit(user.getId(), 10_000);
 
+		// when
+		accountService.withDrawl(user.getId(), 2_000);
+
+		// then
+		int amount = accountService.getAmount(user.getId());
+		assertThat(amount).isEqualTo(10_000 - 2_000);
 	}
 
 	@Test

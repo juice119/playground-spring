@@ -18,7 +18,11 @@ public class AccountService implements IAccountService {
 
 	@Override
 	public AccountRecord withDrawl(int userId, int amount) {
-		return null;
+		// TODO 사용자 밸리데이션 추가
+		AccountRecord lastRecord = repository.findLastRecord(userId);
+		// TODO 출금 시 잔금 확인 추가
+		repository.save(AccountRecord.createWithDrawl(userId, amount, lastRecord));
+		return repository.findLastRecord(userId);
 	}
 
 	@Override
@@ -33,6 +37,6 @@ public class AccountService implements IAccountService {
 
 	@Override
 	public int getAmount(int userId) {
-		return repository.findLastAmount(userId);
+		return repository.findLastRecord(userId).getBalance();
 	}
 }
