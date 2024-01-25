@@ -73,6 +73,24 @@ class AccountServiceTest {
 	@Test
 	@DisplayName("사용자간 이체 할 수 있다")
 	void transfer() {
+		// given
+		int userAMoney = 10_000;
+		int userBMoney = 8_000;
+		int transferAmount = 2_000;
+
+		User userA = userService.create("A", "01012341111");
+		User userB = userService.create("B", "01012342222");
+		accountService.deposit(userA.getId(), userAMoney);
+		accountService.deposit(userB.getId(), userBMoney);
+
+		// when
+		accountService.transfer(userA.getId(), userB.getId(), transferAmount);
+
+		// then
+		int changedUserAMoney = accountService.getAmount(userA.getId());
+		assertThat(changedUserAMoney).isEqualTo(userAMoney - transferAmount);
+		int changedUserBMoney = accountService.getAmount(userB.getId());
+		assertThat(changedUserBMoney).isEqualTo(userBMoney + transferAmount);
 	}
 
 	@TestConfiguration

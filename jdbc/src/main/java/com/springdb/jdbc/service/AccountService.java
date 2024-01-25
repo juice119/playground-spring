@@ -1,5 +1,7 @@
 package com.springdb.jdbc.service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.springdb.jdbc.domain.AccountRecord;
 import com.springdb.jdbc.repository.IAccountRecordRepository;
 
@@ -25,9 +27,14 @@ public class AccountService implements IAccountService {
 		return repository.findLastRecord(userId);
 	}
 
+	@Transactional
 	@Override
-	public AccountRecord transfer(int senderId, int receiverId, int amount) {
-		return null;
+	public void transfer(int senderId, int receiverId, int amount) {
+		AccountRecord senderRecord = repository.findLastRecord(senderId);
+		AccountRecord receiverRecord = repository.findLastRecord(receiverId);
+
+		repository.save(AccountRecord.createTransferSend(senderRecord, receiverId, amount));
+		repository.save(AccountRecord.createTransferReceive(receiverRecord, receiverId, amount));
 	}
 
 	@Override

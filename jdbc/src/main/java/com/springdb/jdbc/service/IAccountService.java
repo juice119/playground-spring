@@ -7,7 +7,7 @@ public interface IAccountService {
 
 	AccountRecord withDrawl(int userId, int amount);
 
-	AccountRecord transfer(int senderId, int receiverId, int amount);
+	void transfer(int senderId, int receiverId, int amount);
 
 	AccountRecord create(int userId);
 
